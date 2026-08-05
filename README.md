@@ -11,7 +11,7 @@ the implementation, and a verification test suite.
 ## Conventions
 - Language: C99, freestanding — no dynamic allocation
 - Coding standard: MISRA-C:2012
-- Layout per module: `docs/` `inc/` `src/` `test/` `Makefile`
+- Layout per module: docs/ inc/ src/ test/ Makefile
 
 ## Author
 Hatem — Embedded Software Engineer (avionics)
