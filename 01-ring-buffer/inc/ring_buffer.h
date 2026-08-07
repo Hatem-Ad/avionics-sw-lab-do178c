@@ -32,4 +32,7 @@ typedef struct
     volatile uint32_t tail;      /**< read index  (consumer)          */
 } rb_t;
 
+#include "ring_buffer.h"
+
+
  #endif /* RING_BUFFER_H */
