@@ -33,5 +33,4 @@ typedef struct
 } rb_t;
 
 
-
  #endif /* RING_BUFFER_H */
