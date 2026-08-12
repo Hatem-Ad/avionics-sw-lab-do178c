@@ -19,6 +19,8 @@ rb_status_t rb_init(rb_t *rb, uint8_t *storage, size_t capacity)
 {
     rb_status_t status = RB_OK;
     /* TODO: validate params, then initialise fields */
+*storage = 0;
+
     return status;
 }
 
