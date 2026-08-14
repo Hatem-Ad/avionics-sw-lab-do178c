@@ -15,11 +15,12 @@ static bool rb_is_power_of_two(size_t value)
 /* --- Public functions --------------------------------------------------- */
 
 /** @req LLR-RB-001, LLR-RB-002 */
-rb_status_t rb_init(rb_t *rb, uint8_t *storage, size_t capacity)
+rb_status_t rb_init(rb_t *rb, uint8_t *storage, uint32_t capacity)
 {
     rb_status_t status = RB_OK;
     /* TODO: validate params, then initialise fields */
 *storage = 0;
+ capacity= 0;
 
     return status;
 }
