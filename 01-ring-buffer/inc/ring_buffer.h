@@ -1,30 +1,41 @@
-#ifndef RB_TYPES_H
-#define RB_TYPES_H
+/**
+ * @file    ring_buffer.h
+ * @brief   Lock-free SPSC circular buffer.
+ * @spec    SRS-RINGBUF-001 Rev A
+ */
+#ifndef RING_BUFFER_H
+#define RING_BUFFER_H
 
-/* Project-defined fixed-width types.
-   This file is the ONLY translation unit permitted to reference
-   basic C types. All other files use the typedefs below exclusively.
-   Target: ARM Cortex-M4 (STM32F303), arm-none-eabi-gcc, ILP32. */
+#include "rb_types.h"
 
-typedef unsigned char   uint8_t;
-typedef unsigned short  uint16_t;
-typedef unsigned int    uint32_t;
+/** @brief Return status of the module. */
+typedef enum
+{
+    RB_OK        = 0,
+    RB_ERR_PARAM = 1,
+    RB_ERR_FULL  = 2,
+    RB_ERR_EMPTY = 3
+} rb_status_t;
 
-typedef signed char     int8_t;
-typedef signed short    int16_t;
-typedef signed int      int32_t;
+/**
+ * @brief Buffer control block. Fields are private.
+ * @note  head is written by the producer only (LLR-RB-011).
+ *        tail is written by the consumer only.
+ */
+typedef struct
+{
+    uint8_t          *storage;
+    uint32_t          capacity;
+    volatile uint32_t head;
+    volatile uint32_t tail;
+} rb_t;
 
-typedef uint8_t         boolean_t;
+rb_status_t rb_init(rb_t *rb, uint8_t *storage, uint32_t capacity);
+rb_status_t rb_put(rb_t *rb, uint8_t byte);
+rb_status_t rb_get(rb_t *rb, uint8_t *byte);
+uint32_t    rb_count(const rb_t *rb);
+boolean_t   rb_is_empty(const rb_t *rb);
+boolean_t   rb_is_full(const rb_t *rb);
+rb_status_t rb_flush(rb_t *rb);
 
-#define TRUE      ((boolean_t)1U)
-#define FALSE     ((boolean_t)0U)
-#define NULL_PTR  ((void *)0)
-
-/* Compile-time width verification: a wrong width produces a negative
-   array size and fails the build. */
-typedef char assert_u8 [(sizeof(uint8_t)  == 1U) ? 1 : -1];
-typedef char assert_u16[(sizeof(uint16_t) == 2U) ? 1 : -1];
-typedef char assert_u32[(sizeof(uint32_t) == 4U) ? 1 : -1];
-typedef char assert_s32[(sizeof(int32_t)  == 4U) ? 1 : -1];
-
-#endif /* RB_TYPES_H */
+#endif /* RING_BUFFER_H */
